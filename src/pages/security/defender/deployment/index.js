@@ -1,12 +1,12 @@
 import { Typography, Divider } from "@mui/material";
 import { Grid } from "@mui/system";
 import { useForm } from "react-hook-form";
-import { Layout as DashboardLayout } from "/src/layouts/index.js";
-import CippFormPage from "/src/components/CippFormPages/CippFormPage";
-import CippFormComponent from "/src/components/CippComponents/CippFormComponent";
-import { CippFormTenantSelector } from "/src/components/CippComponents/CippFormTenantSelector";
-import { CippFormCondition } from "/src/components/CippComponents/CippFormCondition";
-import { CippFormInputArray } from "/src/components/CippComponents/CippFormInputArray";
+import { Layout as DashboardLayout } from "../../../../layouts/index.js";
+import CippFormPage from "../../../../components/CippFormPages/CippFormPage";
+import CippFormComponent from "../../../../components/CippComponents/CippFormComponent";
+import { CippFormTenantSelector } from "../../../../components/CippComponents/CippFormTenantSelector";
+import { CippFormCondition } from "../../../../components/CippComponents/CippFormCondition";
+import { CippFormInputArray } from "../../../../components/CippComponents/CippFormInputArray";
 
 const DeployDefenderForm = () => {
   const formControl = useForm({
@@ -90,8 +90,8 @@ const DeployDefenderForm = () => {
                 />
                 <CippFormComponent
                   type="switch"
-                  label="EDR: Expedite Telemetry Reporting Frequency"
-                  name="EDR.Telemetry"
+                  label="EDR: Connect Defender Configuration Package automatically from Connector"
+                  name="EDR.Config"
                   formControl={formControl}
                 />
               </Grid>
@@ -122,18 +122,39 @@ const DeployDefenderForm = () => {
                 />
                 <CippFormComponent
                   type="switch"
-                  label="EDR: Connect Defender Configuration Package automatically from Connector"
-                  name="EDR.Config"
-                  formControl={formControl}
-                />
-                <CippFormComponent
-                  type="switch"
                   label="EDR: Enable Sample Sharing"
                   name="EDR.SampleSharing"
                   formControl={formControl}
                 />
               </Grid>
             </Grid>
+            <CippFormCondition
+              formControl={formControl}
+              field="EDR.Config"
+              compareType="is"
+              compareValue={true}
+            >
+              {/* EDR Assignment Section */}
+              <Grid size={{ xs: 12 }}>
+                <Typography variant="h6" sx={{ mb: 2 }}>
+                  EDR Assignment
+                </Typography>
+                <CippFormComponent
+                  type="radio"
+                  label=""
+                  name="EDR.AssignTo"
+                  options={[
+                    { label: "Do not assign", value: "none" },
+                    { label: "Assign to all users", value: "allLicensedUsers" },
+                    { label: "Assign to all devices", value: "AllDevices" },
+                    { label: "Assign to all users and devices", value: "AllDevicesAndUsers" },
+                  ]}
+                  formControl={formControl}
+                  validators={{ required: "Assignment must be selected" }}
+                  row
+                />
+              </Grid>
+            </CippFormCondition>
           </Grid>
         </CippFormCondition>
 
